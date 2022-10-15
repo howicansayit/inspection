@@ -52,7 +52,7 @@ function showReportsPage() {
         })
         document.getElementById("modalsGroup").innerHTML = ""
         document.getElementById("reportsCardsGroup").innerHTML = ""
-        reloadReports()
+        setTimeout( () => reloadReports(), 100)
     }
 
     let sendReportButton = document.getElementById("sendReportButton")
@@ -76,7 +76,7 @@ function showReportsPage() {
             for (let i = 0; i < data.length; i++) {
                 if (data[i].content.includes("report")) {
                     console.log(data[i])
-                    
+
                     let sendDate = new Date(data[i].timestamp)
                     sendDate = `${('0' + sendDate.getHours()).slice(-2)}:${('0' + sendDate.getMinutes()).slice(-2)} ${('0' + sendDate.getDate()).slice(-2) + '/'
                         + ('0' + (sendDate.getMonth() + 1)).slice(-2) + '/'
