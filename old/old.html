@@ -1,0 +1,79 @@
+<!-- <header class="navbar navbar-expand-lg bd-navbar bg-light">
+        <div class="container-fluid container-xxl bd-gutter flex-wrap flex-lg-nowrap">
+            <a class="navbar-brand">Navbar</a>
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
+    </header> -->
+
+
+<div class="card mt-5 mx-auto w-50">
+    <div class="card-body">
+        <h5 id="userTitle" class="card-title">Undefined</h5>
+
+        <div class="card mb-3">
+            <div id="editor"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="formFile" class="form-label">Default file input example</label>
+            <input class="form-control" type="file" id="formFile">
+        </div>
+
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalToggle0">
+            Открыть список отчётов
+        </button>
+
+        <button class="btn btn-outline-secondary" type="button" onclick="postReport()">Отправить</button>
+    </div>
+</div>
+
+<div id="modals"></div>
+
+<script>
+    var quill = new Quill('#editor', {
+        theme: 'snow'
+    });
+</script>
+
+<script>
+    const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
+        const byteCharacters = atob(b64Data);
+        const byteArrays = [];
+
+        for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+            const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+            const byteNumbers = new Array(slice.length);
+            for (let i = 0; i < slice.length; i++) {
+                byteNumbers[i] = slice.charCodeAt(i);
+            }
+
+            const byteArray = new Uint8Array(byteNumbers);
+            byteArrays.push(byteArray);
+        }
+
+        const blob = new Blob(byteArrays, { type: contentType });
+        return blob;
+    }
+</script>
+
+<!-- quill.root.innerHTML -->
+<script>
+    const reader = new FileReader();
+    reader.onloadend = () => {
+        console.log(reader.result);
+    };
+
+    let pdf = () => {
+        const blob = new Blob([quill.root.innerHTML], { type: "text/html" })
+
+        var fd = new FormData();
+        fd.append("content", "report")
+        fd.append("attachments", blob)
+
+        return fd
+    }
+</script>
