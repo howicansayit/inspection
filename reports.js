@@ -52,7 +52,7 @@ function showReportsPage() {
         })
         document.getElementById("modalsGroup").innerHTML = ""
         document.getElementById("reportsCardsGroup").innerHTML = ""
-        setTimeout( () => reloadReports(), 100)
+        setTimeout( () => reloadReports(), 1000)
     }
 
     let sendReportButton = document.getElementById("sendReportButton")
