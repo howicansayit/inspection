@@ -36,7 +36,13 @@ function showReportsPage() {
             'syntax': true
         },
         theme: 'snow',
-    });
+    })
+
+    quill.on('text-change', (e) => {
+        quill.formatText(1980, 7000, {
+            'color': 'rgb(220, 20, 60)'
+        })
+    })
 
     postReport = () => {
         axios({
@@ -52,7 +58,7 @@ function showReportsPage() {
         })
         document.getElementById("modalsGroup").innerHTML = ""
         document.getElementById("reportsCardsGroup").innerHTML = ""
-        setTimeout( () => reloadReports(), 1000)
+        setTimeout(() => reloadReports(), 1000)
     }
 
     let sendReportButton = document.getElementById("sendReportButton")
@@ -106,7 +112,7 @@ function showReportsPage() {
                     <div class="modal" id="report${i}" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog modal-xl">
                             <div class="modal-content">
-                                <div class="modal-body">
+                                <div class="modal-body text-break">
                                     ${data[i].content.slice(7)}
                                 </div>
                             </div>
