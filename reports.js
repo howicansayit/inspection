@@ -72,9 +72,9 @@ function showReportsPage() {
     function reloadReports() {
         axios({
             method: "GET",
-            url: "https://discord.com/api/channels/1026204385417633902/messages?limit=100",
+            url: "https://discord.com/api/v10/channels/1026204385417633902/messages?limit=100",
             headers: {
-                'authorization': localStorage.authorization
+                'Authorization': botToken
             },
         }).then((response) => {
             data = response.data
