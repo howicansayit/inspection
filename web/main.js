@@ -1,5 +1,5 @@
 function showMainPage() {
-    if (localStorage.authorization) {
+    if (localStorage.authorization && localStorage.inspectorData) {
         inspectorData = JSON.parse(localStorage.inspectorData)
         document.getElementById("main").innerHTML =
             String.raw`
@@ -13,18 +13,19 @@ function showMainPage() {
         </div>
         `
     } else {
-        document.getElementById("main").innerHTML =
-            String.raw`
-        <div class="card">
-            <div class="card-body">
-                <p class="card-text">
-                    Для начала авторизируйстесь используя <strong>discord</strong>.
-                </p>
-                <p class="card-text">
-                    <i>Данные хранятся только <b>локально</b>. Автор не имеет доступа к вашей информации.</i>
-                </p>
-            </div>
-        </div>
-        `
+        // document.getElementById("main").innerHTML =
+        //     String.raw`
+        // <div class="card">
+        //     <div class="card-body">
+        //         <p class="card-text">
+        //             Для начала авторизируйстесь используя <strong>discord</strong>.
+        //         </p>
+        //         <p class="card-text">
+        //             <i>Данные хранятся только <b>локально</b>. Автор не имеет доступа к вашей информации.</i>
+        //         </p>
+        //     </div>
+        // </div>
+        // `
+        // window.location.reload()
     }
 }

@@ -1,6 +1,4 @@
 if (localStorage.authorization != undefined) {
-    document.querySelector("#tokenInput").value = localStorage.authorization
-
     // document.querySelector("#userTitle").innerHTML = `
     // <div class="spinner-border" role="status">
     //     <span class="visually-hidden">Loading...</span>
@@ -27,6 +25,7 @@ if (localStorage.authorization != undefined) {
             data = response.data
             localStorage.inspectorData = JSON.stringify(data)
 
+            showMainPage()
             // document.querySelector("#userTitle").innerHTML = 
             // `
             // Авторизован: ${data.nick}
@@ -39,6 +38,7 @@ if (localStorage.authorization != undefined) {
 
     if (accessToken != null) {
         localStorage.authorization = `${tokenType} ${accessToken}`
+
 
         window.location.reload()
     }
