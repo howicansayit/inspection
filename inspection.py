@@ -1,6 +1,7 @@
 import eel
 import requests
 import json
+import webbrowser
 
 eel.init('web')
 
@@ -35,4 +36,8 @@ def send_report_embed(inspector_data, text):
     }))
     return response.text
 
-eel.start('index.html', cmdline_args=['--start-fullscreen'], shutdown_delay=0.1)
+@eel.expose
+def eel_exit():
+    exit()
+
+eel.start("auth.html", size=(1200, 750), shutdown_delay=0.1, port=8000)
