@@ -1,25 +1,17 @@
-let flag = await cookieStore.get("auth")
-
-if (flag != undefined) {
+if (getCookie("authorization") != undefined) {
     showMainPage()
 } else {
     const fragment = new URLSearchParams(window.location.hash.slice(1));
     const [accessToken, tokenType] = [fragment.get('access_token'), fragment.get('token_type')];
 
     if (accessToken != null) {
-        await cookieStore.set({
-            name: "authorization",
-            value: `${tokenType} ${accessToken}`,
-            expires: Date.now() + 86400,
-            sameSite: "strict" 
-        });
-
+        document.cookie = `authorization=${tokenType} ${accessToken}; max-age=86400; sameSite=strict`
 
         axios({
             method: 'GET',
             url: "https://discord.com/api/users/@me",
             headers: {
-                'authorization': await cookieStore.get("authorization")
+                'authorization': getCookie("authorization")
             },
         }).then(async (response) => {
             data = response.data
@@ -29,7 +21,7 @@ if (flag != undefined) {
                 method: 'GET',
                 url: `https://discord.com/api/v10/users/@me/guilds/947217342713184346/member`,
                 headers: {
-                    'authorization': await cookieStore.get("authorization")
+                    'authorization': getCookie("authorization")
                 },
             }).then((response) => {
                 data = response.data
@@ -50,7 +42,7 @@ if (flag != undefined) {
 }
 
 let delToken = async (e) => {
-    await cookieStore.delete("authorization")
+    deleteCookie("authorization")
 
     window.location.reload()
 }
