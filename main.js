@@ -1,5 +1,5 @@
-function showMainPage() {
-    if (cookieStore.get("authorization") && localStorage.inspectorData) {
+async function showMainPage() {
+    if (await cookieStore.get("authorization") && localStorage.inspectorData) {
         inspectorData = JSON.parse(localStorage.inspectorData)
         document.getElementById("main").innerHTML =
             String.raw`
