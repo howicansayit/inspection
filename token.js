@@ -39,8 +39,10 @@ if (localStorage.authorization != undefined) {
     if (accessToken != null) {
         localStorage.authorization = `${tokenType} ${accessToken}`
 
-
         window.location.reload()
+    } else {
+        let origin = window.location.origin
+        window.location.href = `https://discord.com/api/oauth2/authorize?client_id=1031942540703825941&redirect_uri=https%3A%2F%2F${origin}&response_type=token&scope=identify%20guilds%20guilds.members.read`
     }
 }
 
