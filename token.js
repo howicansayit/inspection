@@ -1,4 +1,6 @@
-if (await cookieStore.get("authorization") != undefined) {
+let flag = await cookieStore.get("auth")
+
+if (flag != undefined) {
     showMainPage()
 } else {
     const fragment = new URLSearchParams(window.location.hash.slice(1));
