@@ -1,5 +1,5 @@
-let easyMDE = NaN
-let postReport = NaN
+let easyMDE = undefined
+let postReport = undefined
 
 function showReportsPage() {
     document.getElementById("main").innerHTML =
@@ -38,41 +38,38 @@ function showReportsPage() {
         spellChecker: false,
     })
 
-    // quill = new Quill('#editor', {
-    //     modules: {
-    //         'history': {
-    //             'userOnly': true,
-    //             'toolbar': '#toolbar',
-    //         },
-    //         'syntax': true
-    //     },
-    //     theme: 'snow',
-    // })
-
-    // quill.on('text-change', (e) => {
-    //     quill.formatText(1980, 7000, {
-    //         'color': 'rgb(220, 20, 60)'
-    //     })
-    // })
-
     postReport = async () => {
-        res = await eel.send_report_embed(localStorage.inspectorData, easyMDE.value())()
-
+        // res = await eel.send_report_embed(localStorage.inspectorData, easyMDE.value())()
+        let inspData = JSON.parse(localStorage.inspectorData)
+        await axios({
+            method: 'post',
+            url: 'https://inspection-backend.vercel.app/api/inspector',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: {
+                "description": easyMDE.value(),
+                "author": {
+                    "name": inspData.nick,
+                    "icon_url": `https://cdn.discordapp.com/avatars/${inspData.user.id}/${inspData.user.avatar}`
+                }
+            }
+        })
+        console.log(JSON.parse(localStorage.inspectorData))
         document.getElementById("modalsGroup").innerHTML = ""
         document.getElementById("reportsCardsGroup").innerHTML = ""
         setTimeout(() => reloadReports(), 1000)
     }
 
-    let sendReportButton = document.getElementById("sendReportButton")
-    sendReportButton.outerHTML =
-        String.raw`
-    <button class="btn btn-secondary mt-3" type="button" onclick="postReport()">
-        Отправить отчёт
-    </button>
-    `
-
     async function reloadReports() {
-        data = JSON.parse(await eel.get_inspection_reports()())
+        let res = await axios({
+            method: 'get',
+            url: 'https://inspection-backend.vercel.app/api/inspector',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        let data = res.data
 
         for (let i = 0; i < data.length; i++) {
             if (data[i].author.bot == true) {
@@ -94,7 +91,16 @@ function showReportsPage() {
                         Отчёт от:
                     </div>
                     <div class="card-body">
-                        <p class="card-text" data-bs-toggle="modal" data-bs-target="#report${i}"><b>${data[i].author.username}</b></p>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-auto">
+                                    <img src="${data[i].embeds[0].author.icon_url}" class="rounded-circle" alt="avatar" style="width: 45px">
+                                </div>
+                                <div class="col align-self-center">
+                                    <p class="card-text" data-bs-toggle="modal" data-bs-target="#report${i}"><b>${data[i].embeds[0].author.name}</b>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-footer">
                         <small class="text-muted">Дата отправки: ${sendDate}</small>
@@ -108,7 +114,7 @@ function showReportsPage() {
                     <div class="modal-dialog modal-xl">
                         <div class="modal-content">
                             <div class="modal-body text-break">
-                               <textarea id="ta-report-${i}" class="editor-preview"></textarea>
+                                <textarea id="ta-report-${i}" class="editor-preview"></textarea>
                             </div>
                         </div>
                     </div>
@@ -132,5 +138,14 @@ function showReportsPage() {
             }
         }
     }
+
+    let sendReportButton = document.getElementById("sendReportButton")
+    sendReportButton.outerHTML =
+        String.raw`
+    <button class="btn btn-secondary mt-3" type="button" onclick="postReport()">
+        Отправить отчёт
+    </button>
+    `
+
     reloadReports()
 }
